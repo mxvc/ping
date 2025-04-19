@@ -1,13 +1,13 @@
 package io.github.mxvc.ping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -17,14 +17,19 @@ public class HomeController {
 
     @RequestMapping(value = {"/", "/index.html"},produces = "text/plain")
     public String request(HttpServletRequest request) {
-        List<String> info = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+
+        result.add("SERVER Name:");
+        result.add(getServerName());
+        result.add("");
+
         List<String> serverIps = getServerIps();
-        info.add("SERVER IP:");
-        info.addAll(serverIps);
+        result.add("SERVER IP:");
+        result.addAll(serverIps);
 
 
         StringBuilder sb = new StringBuilder();
-        for (String s : info) {
+        for (String s : result) {
             sb.append(s).append("\n");
         }
         return sb.toString();
@@ -52,4 +57,14 @@ public class HomeController {
         return ips;
     }
 
+    private String getServerName() {
+        List<String> ips = new ArrayList<>();
+        try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            String hostname = inetAddress.getHostName();
+            return hostname;
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
