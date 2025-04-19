@@ -26,9 +26,9 @@
         <tag/>
         <url/>
     </scm>
-    <roperties>
+    <properties>
         <java.version>1.8</java.version>
-    </roperties>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
